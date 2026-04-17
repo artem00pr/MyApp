@@ -1,53 +1,42 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
-const CustomInput = ({
+interface CustomInputProps {
+  label?: string;
+  placeholder?: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
+  keyboardType?: "default" | "email-address" | "numeric";
+}
+
+export default function CustomInput({
   label,
-  placeholder = "Enter text",
+  placeholder = "Введите текст",
   value,
   onChangeText,
   secureTextEntry = false,
   keyboardType = "default",
-}: CustomInputProps) => {
+}: CustomInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View style={{ marginBottom: 16 }}>
-      <Text
-        style={{
-          fontFamily: "Quicksand-SemiBold",
-          fontSize: 14,
-          color: "#1C1C1E",
-          marginBottom: 6,
-        }}
-      >
-        {label}
-      </Text>
+    <View className="mb-6">
+      {label && <Text className="text-base font-semibold mb-2">{label}</Text>}
       <TextInput
-        autoCapitalize="none"
-        autoCorrect={false}
+        className={`border rounded-2xl px-5 py-4 text-base ${
+          isFocused ? "border-blue-600" : "border-gray-300"
+        }`}
+        placeholder={placeholder}
+        placeholderTextColor="#9ca3af"
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
-        placeholder={placeholder}
-        placeholderTextColor="#C0C0C0"
+        autoCapitalize="none"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        style={{
-          borderWidth: 1.5,
-          borderColor: isFocused ? "#FF4500" : "#E0E0E0",
-          borderRadius: 14,
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          fontFamily: "Quicksand-Regular",
-          fontSize: 15,
-          color: "#1C1C1E",
-          backgroundColor: "#FAFAFA",
-        }}
       />
     </View>
   );
-};
-
-export default CustomInput;
+}
